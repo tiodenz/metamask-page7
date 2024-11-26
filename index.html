@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integración MetaMask</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        async function connectMetaMask() {
+            // Mostrar el spinner o carga
+            document.getElementById('loadingMessage').style.display = 'block';
+
+            // Verifica si MetaMask está instalado
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    // Solicita la conexión a MetaMask
+                    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+
+                    // Muestra el estado de la conexión
+                    document.getElementById('status').innerHTML = 'Conectado a MetaMask: ' + accounts[0];
+                    document.getElementById('loadingMessage').style.display = 'none'; // Oculta el spinner
+
+                    // Redirige al usuario a tu página de inicio después de la conexión
+                    setTimeout(() => {
+                        window.location.href = 'https://earcorp.cl'; // Cambia esto por la URL de tu página de inicio
+                    }, 3000); // Redirige después de 3 segundos para dar tiempo a la conexión
+
+                } catch (error) {
+                    document.getElementById('status').innerHTML = 'Error al conectar MetaMask: ' + error.message;
+                    document.getElementById('loadingMessage').style.display = 'none'; // Oculta el spinner
+                }
+            } else {
+                // Si MetaMask no está instalado, muestra el mensaje
+                document.getElementById('status').innerHTML = 'MetaMask no está instalado. <a href="https://metamask.io/download.html" target="_blank">Haz clic aquí para instalar MetaMask</a>';
+                document.getElementById('loadingMessage').style.display = 'none'; // Oculta el spinner
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #073061;
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #f6851b; /* Color similar a MetaMask */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #f0a500;
+        }
+
+        #status {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        #loadingMessage {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .loadingSpinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #f6851b; /* Color similar a MetaMask */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        a {
+            color: #f6851b;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Integración MetaMask Web</h1>
+    
+    <!-- Botón que abre MetaMask y se conecta -->
+    <button onclick="connectMetaMask()">Conectar MetaMask</button>
+
+    <!-- Spinner de carga mientras MetaMask se conecta -->
+    <div id="loadingMessage">
+        <div class="loadingSpinner"></div>
+        <p>Esperando conexión a MetaMask...</p>
+    </div>
+
+    <!-- Estado de la conexión con MetaMask -->
+    <p id="status">Estado de la conexión...</p>
+</body>
+</html>
